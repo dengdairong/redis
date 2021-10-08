@@ -86,6 +86,7 @@ void listRelease(list *list)
  * On error, NULL is returned and no operation is performed (i.e. the
  * list remains unaltered).
  * On success the 'list' pointer you pass to the function is returned. */
+/*将指针添加都队列头部*/
 list *listAddNodeHead(list *list, void *value)
 {
     listNode *node;
@@ -165,6 +166,7 @@ list *listInsertNode(list *list, listNode *old_node, void *value, int after) {
  * It's up to the caller to free the private value of the node.
  *
  * This function can't fail. */
+/*删除队列节点*/
 void listDelNode(list *list, listNode *node)
 {
     if (node->prev)
