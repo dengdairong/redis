@@ -2129,7 +2129,7 @@ void beforeSleep(struct aeEventLoop *eventLoop) {
         return;
     }
 
-    /* Handle precise timeouts of blocked clients. */
+    /* Handle precise timeouts of blocked clients.处理被超时的客户端*/
     handleBlockedClientsTimeout();
 
     /* We should handle pending reads clients ASAP after event loop. */
@@ -2824,7 +2824,9 @@ void makeThreadKillable(void) {
     pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
     pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
 }
-
+/*服务初始化
+ * 添加请求监听句柄
+ * */
 void initServer(void) {
     int j;
 

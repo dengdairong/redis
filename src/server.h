@@ -164,7 +164,7 @@ extern int configOOMScoreAdjValuesDefaults[CONFIG_OOM_COUNT];
 /* Command flags. Please check the command table defined in the server.c file
  * for more information about the meaning of every flag. */
 #define CMD_WRITE (1ULL<<0)            /* "write" flag */
-#define CMD_READONLY (1ULL<<1)         /* "read-only" flag */
+#define CMD_READONLY (1ULL<<1)          /* "read-only" flag */
 #define CMD_DENYOOM (1ULL<<2)          /* "use-memory" flag */
 #define CMD_MODULE (1ULL<<3)           /* Command exported by module. */
 #define CMD_ADMIN (1ULL<<4)            /* "admin" flag */
@@ -1119,8 +1119,8 @@ struct redisServer {
     int cfd_count;              /* Used slots in cfd[] */
     list *clients;              /* List of active clients */
     list *clients_to_close;     /* Clients to close asynchronously */
-    list *clients_pending_write; /* There is to write or install handler. */
-    list *clients_pending_read;  /* Client has pending read socket buffers. */
+    list *clients_pending_write; /* There is to write or install handler. 待响应客户端队列*/
+    list *clients_pending_read;  /* Client has pending read socket buffers. 待处理客户端请求队列*/
     list *slaves, *monitors;    /* List of slaves and MONITORs */
     client *current_client;     /* Current client executing the command. */
     rax *clients_timeout_table; /* Radix tree for blocked clients timeouts. */

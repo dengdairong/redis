@@ -1043,7 +1043,7 @@ static void acceptCommonHandler(connection *conn, int flags, char *ip) {
         return;
     }
 }
-
+/* 请求接收句柄 */
 void acceptTcpHandler(aeEventLoop *el, int fd, void *privdata, int mask) {
     int cport, cfd, max = MAX_ACCEPTS_PER_CALL;
     char cip[NET_IP_STR_LEN];
@@ -1063,7 +1063,7 @@ void acceptTcpHandler(aeEventLoop *el, int fd, void *privdata, int mask) {
         acceptCommonHandler(connCreateAcceptedSocket(cfd),0,cip);
     }
 }
-
+/*tls请求接收句柄*/
 void acceptTLSHandler(aeEventLoop *el, int fd, void *privdata, int mask) {
     int cport, cfd, max = MAX_ACCEPTS_PER_CALL;
     char cip[NET_IP_STR_LEN];
@@ -1083,7 +1083,7 @@ void acceptTLSHandler(aeEventLoop *el, int fd, void *privdata, int mask) {
         acceptCommonHandler(connCreateAcceptedTLS(cfd, server.tls_auth_clients),0,cip);
     }
 }
-
+/*unix请求接收句柄*/
 void acceptUnixHandler(aeEventLoop *el, int fd, void *privdata, int mask) {
     int cfd, max = MAX_ACCEPTS_PER_CALL;
     UNUSED(el);
@@ -1375,6 +1375,7 @@ client *lookupClientByID(uint64_t id) {
  * This function is called by threads, but always with handler_installed
  * set to 0. So when handler_installed is set to 0 the function must be
  * thread safe. */
+/*响应客户端*/
 int writeToClient(client *c, int handler_installed) {
     /* Update total number of writes on server */
     server.stat_total_writes_processed++;
@@ -1898,6 +1899,7 @@ void commandProcessed(client *c) {
  *
  * The function returns C_ERR in case the client was freed as a side effect
  * of processing the command, otherwise C_OK is returned. */
+/*处理客户端请求命令并重置客户端*/
 int processCommandAndResetClient(client *c) {
     int deadclient = 0;
     server.current_client = c;
@@ -3050,11 +3052,11 @@ int tio_debug = 0;
 pthread_t io_threads[IO_THREADS_MAX_NUM];
 pthread_mutex_t io_threads_mutex[IO_THREADS_MAX_NUM];
 _Atomic unsigned long io_threads_pending[IO_THREADS_MAX_NUM];
-int io_threads_op;      /* IO_THREADS_OP_WRITE or IO_THREADS_OP_READ. */
+int io_threads_op;      /* IO_THREADS_OP_WRITE or IO_THREADS_OP_READ. 全局控制当前操作是读还是写*/
 
 /* This is the list of clients each thread will serve when threaded I/O is
  * used. We spawn io_threads_num-1 threads, since one is the main thread
- * itself. */
+ * itself. IO线程对应的客户端列表*/
 list *io_threads_list[IO_THREADS_MAX_NUM];
 
 void *IOThreadMain(void *myid) {
@@ -3290,6 +3292,7 @@ int handleClientsWithPendingWritesUsingThreads(void) {
  * This is called by the readable handler of the event loop.
  * As a side effect of calling this function the client is put in the
  * pending read clients and flagged as such. */
+/*添加客户端请求读*/
 int postponeClientRead(client *c) {
     if (server.io_threads_active &&
         server.io_threads_do_reads &&
