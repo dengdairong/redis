@@ -3349,7 +3349,7 @@ int handleClientsWithPendingReadsUsingThreads(void) {
     }
     listEmpty(io_threads_list[0]);
 
-    /* Wait for all the other threads to end their work. */
+    /* Wait for all the other threads to end their work. 等待其他所有线程结束工作*/
     while(1) {
         unsigned long pending = 0;
         for (int j = 1; j < server.io_threads_num; j++)

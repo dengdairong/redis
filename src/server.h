@@ -817,12 +817,12 @@ typedef struct client {
     int reqtype;            /* Request protocol type: PROTO_REQ_* */
     int multibulklen;       /* Number of multi bulk arguments left to read. */
     long bulklen;           /* Length of bulk argument in multi bulk request. */
-    list *reply;            /* List of reply objects to send to the client. */
+    list *reply;            /* List of reply objects to send to the client. 待响应客户端消息队列*/
     unsigned long long reply_bytes; /* Tot bytes of objects in reply list. */
     size_t sentlen;         /* Amount of bytes already sent in the current
                                buffer or object being sent. */
     time_t ctime;           /* Client creation time. */
-    time_t lastinteraction; /* Time of the last interaction, used for timeout */
+    time_t lastinteraction; /* Time of the last interaction, used for timeout 上次交互的时间*/
     time_t obuf_soft_limit_reached_time;
     uint64_t flags;         /* Client flags: CLIENT_* macros. */
     int authenticated;      /* Needed when the default user requires auth. */
@@ -1167,7 +1167,7 @@ struct redisServer {
     long long stat_active_defrag_key_hits;  /* number of keys with moved allocations */
     long long stat_active_defrag_key_misses;/* number of keys scanned and not moved */
     long long stat_active_defrag_scanned;   /* number of dictEntries scanned */
-    size_t stat_peak_memory;        /* Max used memory record */
+    size_t stat_peak_memory;        /* Max used memory record最大使用内存记录 */
     long long stat_fork_time;       /* Time needed to perform latest fork() */
     double stat_fork_rate;          /* Fork rate in GB/sec. */
     long long stat_rejected_conn;   /* Clients rejected because of maxclients */
